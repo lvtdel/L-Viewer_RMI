@@ -199,45 +199,6 @@ public class RemoteScreenForm extends JFrame {
     }
 
 
-//    public void ShowImageToPanel(DTO_ArrayLANImageInforObject arrOIP) {
-//        if (arrOIP != null) {
-//            try {
-//                for (DTO_LANImageInforObject oip : arrOIP.arr) {
-//                    Component[] components = panel.getComponents();
-//                    int index = oip.row * colRowNum + oip.column;
-//                    JLabel label = (JLabel) components[index];
-//                    Image dimg = oip.image.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-//                    label.setIcon(new ImageIcon(dimg));
-//                    //panel.add(label00);
-//                }
-//            } catch (Exception e) {
-//                // TODO: handle exception
-//            }
-//
-//        } else {
-//
-//        }
-//    }
-
-    //No used
-//    public void ShowImageToPanel(DTO_LANImageInforObject lanIIO) {
-//        if (lanIIO != null) {
-//            try {
-//                Component[] components = panel.getComponents();
-//                int index = lanIIO.row * colRowNum + lanIIO.column;
-//                JLabel label = (JLabel) components[index];
-//                Image dimg = lanIIO.image.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-//                label.setIcon(new ImageIcon(dimg));
-//                //panel.add(label00);
-//            } catch (Exception e) {
-//                // TODO: handle exception
-//            }
-//
-//        } else {
-//
-//        }
-//    }
-
     public void ShowStatus(String status) {
         lblStatus.setText("Status: " + status);
     }
@@ -249,22 +210,6 @@ public class RemoteScreenForm extends JFrame {
     private ResourceBundle languageRB = null;
 
     public void SetLanguage(int language) {
-//        Locale locale = null;
-//        switch (language) {
-//            case 0://en
-//                locale = new Locale("en");
-//                break;
-//            case 1://vi
-//                locale = new Locale("vi");
-//                break;
-//            default:
-//                locale = new Locale("en");
-//                break;
-//        }
-//        languageRB = ResourceBundle.getBundle("internationalization.message.language", locale);
-//        chbxMouse.setText(languageRB.getString("chbxMouse"));
-//        chbxKeys.setText(languageRB.getString("chbxKeys"));
-//        this.setTitle(languageRB.getString("frmRemoteScreen"));
     }
 
     public String GetLanguageString(String key) {

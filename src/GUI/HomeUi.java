@@ -97,24 +97,9 @@ public class HomeUi extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 isOpened = false;
-                //bll_LANForm.CloseChatWindow();
-//                bll_LANForm.CloseConnect();
-                try {
-//                    bll_LANForm.CloseChatWindow();
-                } catch (Exception e2) {
-                    // TODO: handle exception
-                }
                 instance = null;
             }
 
-            @Override
-            public void windowOpened(WindowEvent e) {
-//                txtYourIP.setText(BLL_LANForm.GetMyIPv4());
-//                txtYourPort.setText(BLL_LANForm.GetMyPort());
-//                txtYourPassword.setText(BLL_LANForm.RandomPassword());
-
-//                SetLanguage(1);
-            }
         });
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -170,45 +155,6 @@ public class HomeUi extends JFrame {
         btnOpenConnect.setBackground(SystemColor.control);
         btnOpenConnect.setFocusable(false);
         btnOpenConnect.setFont(new Font("Tahoma", Font.PLAIN, 16));
-//        btnOpenConnect.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent arg0) {
-//                if (bll_LANForm.GetIsOpenConnection() == false) {
-//                    try {
-//                        bll_LANForm.OpenConnect(txtYourIP.getText(), txtYourPort.getText(), txtYourPassword.getText());
-//                        btnOpenConnect.setBackground(Color.RED);
-//                        btnOpenConnect.setText(GetLanguageString("lblCloseConnection"));
-//                        txtYourPort.setEditable(false);
-//                        txtYourPassword.setEditable(false);
-//                    } catch (Exception e) {
-//                        if (e.getMessage().equals("Port khong hop le!")) {
-//                            ShowMessage(msgPortInvalid, "Port problem", JOptionPane.ERROR_MESSAGE);
-//                        } else {
-//                            ShowMessage(msgOpenConnectFailed + txtYourIP.getText() + ":" + txtYourPort.getText(), "Open connection failed", JOptionPane.ERROR_MESSAGE);
-//                        }
-//                        System.out.println("Mo ket noi that bai!");
-//                        ShowStatus(GetLanguageString("sttOpenConnectFailed"));
-//                    }
-//
-//                } else {
-//                    try {
-//                        btnOpenConnect.setBackground(new Color(240, 240, 240));
-//                        btnOpenConnect.setText(GetLanguageString("lblAllowConnection"));
-//                        txtYourPort.setEditable(true);
-//                        txtYourPassword.setEditable(true);
-//                        bll_LANForm.CloseConnect();
-//                        ShowStatus(GetLanguageString("sttCloseConnection"));
-//
-//                    } catch (Exception e) {
-//                        System.out.println("Server dong ket noi that bai!");
-//                    }
-//                    try {
-//                        bll_LANForm.CloseChatWindow();
-//                    } catch (Exception e) {
-//                    }
-//                }
-//            }
-//        });
 
         btnOpenchat = new JButton("");
         btnOpenchat.setBorder(null);

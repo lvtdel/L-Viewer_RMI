@@ -89,8 +89,41 @@ public class RemoteScreenBLL {
                 }
             }
         });
+        remoteScreenForm.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("Key pressed");
+                if (remoteScreenForm.chbxKeys.isSelected()) {
+                    onKeyPress(e.getKeyCode());
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (remoteScreenForm.chbxKeys.isSelected()) {
+                    onKeyRelease(e.getKeyCode());
+                }
+            }
+        });
 
         showScreen();
+    }
+
+    private void onKeyRelease(int keyCode) {
+        try {
+            remoteDesktop.keyReleasedServer(keyCode);
+            System.out.println("Key release: " + keyCode);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void onKeyPress(int keyCode) {
+        try {
+            remoteDesktop.mousePressedServer(keyCode);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void onMouseRelease(int button) {
@@ -144,6 +177,7 @@ public class RemoteScreenBLL {
 
         receiveScreen.start();
     }
+
     public static void main(String[] args) {
 //        new RemoteScreenBLL();
     }
