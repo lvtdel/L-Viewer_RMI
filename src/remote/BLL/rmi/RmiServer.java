@@ -1,4 +1,4 @@
-package BLL.rmi;
+package remote.BLL.rmi;
 
 import java.awt.*;
 import java.net.MalformedURLException;

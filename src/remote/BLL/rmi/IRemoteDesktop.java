@@ -1,4 +1,4 @@
-package BLL.rmi;
+package remote.BLL.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

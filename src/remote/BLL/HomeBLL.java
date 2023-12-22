@@ -1,12 +1,12 @@
-package BLL;
+package remote.BLL;
 
-import BLL.rmi.IRemoteDesktop;
-import BLL.rmi.RmiClient;
-import BLL.rmi.RmiServer;
-import GUI.HomeUi;
-import GUI.RemoteScreenForm;
-import ultil.Ip;
-import ultil.Pass;
+import remote.BLL.rmi.IRemoteDesktop;
+import remote.BLL.rmi.RmiClient;
+import remote.BLL.rmi.RmiServer;
+import remote.GUI.HomeUi;
+import remote.GUI.RemoteScreenForm;
+import remote.ultil.Ip;
+import remote.ultil.Pass;
 
 public class HomeBLL {
 

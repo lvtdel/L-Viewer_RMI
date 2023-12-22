@@ -1,4 +1,4 @@
-package ultil;
+package remote.ultil;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

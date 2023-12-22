@@ -13,52 +13,52 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class ChatForm extends JFrame {
+public abstract class ChatForm extends JFrame {
 
     protected JPanel contentPane;
     protected JTextArea txtChatBox;
-    public JButton btnSend;
-    public JButton btnSendFile;
-    public JTextArea txtText;
-    private String chatData = "";
-    public JCheckBox speakerCheckBox;
-    public JCheckBox micCheckBox;
+    protected JButton btnSend;
+    protected JButton btnSendFile;
+    protected JTextArea txtText;
+    protected String chatData = "";
+    protected JCheckBox chbxSpeaker;
+    protected JCheckBox chbxMic;
     private JLabel lblPartnerIp;
 
-    public void addMessage(String message) {
+    public void AddMessage(String message) {
         chatData += message + "\n";
         txtChatBox.setText(chatData);
     }
 
-    public void changeMicState() {
-        if (micCheckBox.isSelected()) {
-            micCheckBox.setIcon(new ImageIcon("resource/micOn.png"));
+    public void MicStateChange() {
+        if (chbxMic.isSelected()) {
+            chbxMic.setIcon(new ImageIcon("resource/micOn.png"));
         } else {
-            micCheckBox.setIcon(new ImageIcon("resource/micOff.png"));
+            chbxMic.setIcon(new ImageIcon("resource/micOff.png"));
         }
     }
 
-    public void changeSpeakerState() {
-        if (speakerCheckBox.isSelected()) {
-            speakerCheckBox.setIcon(new ImageIcon("resource/speakerOn.png"));
+    public void SpeakerStateChange() {
+        if (chbxSpeaker.isSelected()) {
+            chbxSpeaker.setIcon(new ImageIcon("resource/speakerOn.png"));
         } else {
-            speakerCheckBox.setIcon(new ImageIcon("resource/speakerOff.png"));
+            chbxSpeaker.setIcon(new ImageIcon("resource/speakerOff.png"));
         }
     }
 
     /**
      * Create the frame.
      */
-//    public abstract void OpenAudioChat();
-//
-//    public abstract void CloseAudioChat();
-//
-//    public abstract void CloseChat();
-//
-//    public abstract void KhoiTaoEventSend();
-//
-//    public abstract void SendMessageInTextBox();
-//    public abstract void khoiTaoEventSendFile();
+    public abstract void OpenAudioChat();
+
+    public abstract void CloseAudioChat();
+
+    public abstract void CloseChat();
+
+    public abstract void KhoiTaoEventSend();
+
+    public abstract void SendMessageInTextBox();
+    public abstract void khoiTaoEventSendFile();
 
     public String getPath() {
         JFileChooser fileChooser = new JFileChooser();
@@ -74,26 +74,25 @@ public class ChatForm extends JFrame {
 
     public ChatForm() {
         setTitle("Chat");
-        setVisible(true);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent arg0) {
-//                OpenAudioChat();
+                OpenAudioChat();
                 System.out.println("Chat form duoc open");
             }
 
             @Override
             public void windowClosing(WindowEvent arg0) {
                 //CloseAudioChat();
-                micCheckBox.setSelected(false);
-                speakerCheckBox.setSelected(false);
+                chbxMic.setSelected(false);
+                chbxSpeaker.setSelected(false);
                 System.out.println("Close audio chat roi!");
             }
         });
         CreateChatFormGUI();
     }
 
-    public void addMessage(String name, String message) {
+    public void AddMessage(String name, String message) {
         chatData += name + ": " + message + "\n";
         txtChatBox.setText(chatData);
     }
@@ -179,23 +178,27 @@ public class ChatForm extends JFrame {
         );
 
 
-        micCheckBox = new JCheckBox("");
-        micCheckBox.setIcon(new ImageIcon("resource\\micOn.png"));
-//        micCheckBox.addItemListener(arg0 -> changeMicState());
+        chbxMic = new JCheckBox("");
+        chbxMic.setIcon(new ImageIcon("resource\\micOn.png"));
+        chbxMic.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent arg0) {
+                MicStateChange();
+            }
+        });
 
-        speakerCheckBox = new JCheckBox("");
-        speakerCheckBox.setIcon(new ImageIcon("resource\\speakerOn.png"));
-        speakerCheckBox.setSelected(true);
-//        speakerCheckBox.addItemListener(new ItemListener() {
-//            public void itemStateChanged(ItemEvent arg0) {
-//                changeSpeakerState();
-//            }
-//        });
-        panel.add(speakerCheckBox);
-        speakerCheckBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        panel.add(micCheckBox);
-        micCheckBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        micCheckBox.setSelected(true);
+        chbxSpeaker = new JCheckBox("");
+        chbxSpeaker.setIcon(new ImageIcon("resource\\speakerOn.png"));
+        chbxSpeaker.setSelected(true);
+        chbxSpeaker.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent arg0) {
+                SpeakerStateChange();
+            }
+        });
+        panel.add(chbxSpeaker);
+        chbxSpeaker.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        panel.add(chbxMic);
+        chbxMic.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        chbxMic.setSelected(true);
 
         txtChatBox = new JTextArea();
         txtChatBox.setMargin(new Insets(5, 10, 5, 5));

@@ -1,14 +1,12 @@
-package GUI;
+package remote.GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.rmi.Remote;
 import javax.imageio.ImageIO;
 
-import static GUI.RemoteScreenForm.OpenForm;
+import static remote.GUI.RemoteScreenForm.OpenForm;
 
 
 public class TestUI {

@@ -1,10 +1,8 @@
-package BLL;
+package remote.BLL;
 
-import GUI.ChatForm;
+import remote.GUI.ChatForm;
 
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 public class ClientChatBLL {
     ChatForm clientChatForm;

@@ -1,7 +1,7 @@
-package BLL;
+package remote.BLL;
 
-import BLL.rmi.IRemoteDesktop;
-import GUI.RemoteScreenForm;
+import remote.BLL.rmi.IRemoteDesktop;
+import remote.GUI.RemoteScreenForm;
 
 import javax.imageio.ImageIO;
 import java.awt.event.*;

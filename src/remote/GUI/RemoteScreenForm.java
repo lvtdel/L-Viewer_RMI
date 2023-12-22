@@ -1,4 +1,4 @@
-package GUI;
+package remote.GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

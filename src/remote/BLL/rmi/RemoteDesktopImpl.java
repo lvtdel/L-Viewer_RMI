@@ -1,13 +1,11 @@
-package BLL.rmi;
+package remote.BLL.rmi;
 
-import GUI.HomeUi;
-import com.sun.management.OperatingSystemMXBean;
+import remote.GUI.HomeUi;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.lang.management.ManagementFactory;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
