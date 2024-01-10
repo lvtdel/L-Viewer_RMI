@@ -50,10 +50,10 @@ public class ServerChatForm extends ChatForm {
         try {
             if (chbxMic.isSelected()) {
                 System.out.println("Server mic open");
-                ServerAudioBLL.GetInstance().StartRecordingAndSending();
+                ServerAudioBLL.GetInstance().startRecordingAndSending();
             } else {
                 System.out.println("Server mic close");
-                ServerAudioBLL.GetInstance().StopRecordingAndSending();
+                ServerAudioBLL.GetInstance().stopRecordingAndSending();
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -68,11 +68,11 @@ public class ServerChatForm extends ChatForm {
         try {
             if (chbxSpeaker.isSelected()) {
                 System.out.println("Server speaker open");
-                ServerAudioBLL.GetInstance().StartReceivingAndSpeaking();
+                ServerAudioBLL.GetInstance().startReceivingAndSpeaking();
 
             } else {
                 System.out.println("Server speaker close");
-                ServerAudioBLL.GetInstance().StopReceivingAndSpeaking();
+                ServerAudioBLL.GetInstance().stopReceivingAndSpeaking();
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -138,7 +138,7 @@ public class ServerChatForm extends ChatForm {
         System.out.println("Start server chat socket");
         mylocalport = serverPort;
         bll_LANServerChat = new BLL.server.ServerChatBLL(serverPort);
-        bll_LANServerChat.Start();
+        bll_LANServerChat.start();
     }
 
     private int mylocalport;
@@ -161,8 +161,8 @@ public class ServerChatForm extends ChatForm {
                 } catch (Exception e) {
                 }
             }
-            bll_LANAudioServer.StartReceivingAndSpeaking();
-            bll_LANAudioServer.StartRecordingAndSending();
+            bll_LANAudioServer.startReceivingAndSpeaking();
+            bll_LANAudioServer.startRecordingAndSending();
 
         } catch (Exception e) {
             System.out.println("Khoi tao voice chat that bai!");
@@ -178,7 +178,7 @@ public class ServerChatForm extends ChatForm {
     @Override
     public void CloseChat() {
         // TODO Auto-generated method stub
-        bll_LANServerChat.Stop();
+        bll_LANServerChat.stop();
         setVisible(false);
         dispose();
         instance = null;

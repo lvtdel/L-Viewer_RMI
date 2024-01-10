@@ -57,13 +57,13 @@ public class ClientChatForm extends ChatForm {
             if (chbxMic.isSelected()) {
                 System.out.println("Client mic open");
                 try {
-                    ClientAudioBLL.GetInstance().StartRecordingAndSending();
+                    ClientAudioBLL.getInstance().startRecordingAndSending();
                 } catch (Exception e) {
                     System.out.println("Khong ket noi duoc den server");
                 }
             } else {
                 System.out.println("Client mic close");
-                ClientAudioBLL.GetInstance().StopRecordingAndSending();
+                ClientAudioBLL.getInstance().stopRecordingAndSending();
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -78,10 +78,10 @@ public class ClientChatForm extends ChatForm {
         try {
             if (chbxSpeaker.isSelected()) {
                 System.out.println("Client speaker open");
-                ClientAudioBLL.GetInstance().StartReceivingAndSpeaking();
+                ClientAudioBLL.getInstance().startReceivingAndSpeaking();
             } else {
                 System.out.println("Client speaker close");
-                ClientAudioBLL.GetInstance().StopReceivingAndSpeaking();
+                ClientAudioBLL.getInstance().stopReceivingAndSpeaking();
             }
         } catch (Exception e) {
             // TODO: handle exception
@@ -160,7 +160,7 @@ public class ClientChatForm extends ChatForm {
             serverIP = IP;
             serverPort = port;
             bll_LANClientChat = new ClientChatBLL(InetAddress.getByName(IP), port);
-            bll_LANClientChat.Start();
+            bll_LANClientChat.start();
         } catch (UnknownHostException e) {
             System.out.println("IP khong hop le!");
         }
@@ -174,16 +174,16 @@ public class ClientChatForm extends ChatForm {
                     Thread.sleep(500);
                     if (bll_LANClientChat != null) {
                         int myLocalPort = bll_LANClientChat.GetClientChatSocketPort();
-                        bll_LANAudioClient = ClientAudioBLL.GetInstance(myLocalPort + 1, serverIP, serverPort + 1);
+                        bll_LANAudioClient = ClientAudioBLL.getInstance(myLocalPort + 1, serverIP, serverPort + 1);
                         System.out.println("Start client audio at " + (myLocalPort + 1));
                         break;
                     }
                 } catch (Exception e) {
                 }
             }
-            bll_LANAudioClient.StartSocketAndInitAudio();
-            bll_LANAudioClient.StartReceivingAndSpeaking();
-            bll_LANAudioClient.StartRecordingAndSending();
+            bll_LANAudioClient.startSocketAndInitAudio();
+            bll_LANAudioClient.startReceivingAndSpeaking();
+            bll_LANAudioClient.startRecordingAndSending();
         } catch (Exception e) {
             System.out.println("Khoi tao voice chat that bai!");
         }
@@ -199,7 +199,7 @@ public class ClientChatForm extends ChatForm {
     @Override
     public void CloseChat() {
         // TODO Auto-generated method stub
-        bll_LANClientChat.Stop();
+        bll_LANClientChat.stop();
         setVisible(false);
         dispose();
         instance = null;

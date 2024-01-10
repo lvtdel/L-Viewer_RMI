@@ -1,18 +1,18 @@
 package BLL.chat_audio.server;
 
-import BLL.chat_audio.IClientAudioBLL;
+import BLL.chat_audio.IAudioBLL;
 import BLL.chat_audio.NET.server.AudioServer;
 
 import java.net.InetAddress;
 
 
-public class ServerAudioBLL implements IClientAudioBLL {
+public class ServerAudioBLL implements IAudioBLL {
     public static void main(String[] args) {
         ServerAudioBLL bll_LANAudioServer = new ServerAudioBLL(1999);
-        bll_LANAudioServer.StartSocketAndInitAudio();
+        bll_LANAudioServer.startSocketAndInitAudio();
         //bll_LANAudioServer.StartReceivingAndSpeaking();
         bll_LANAudioServer.SetClientIPAndPort("192.168.1.135", 2000);//mo server va ket noi toi port 2000 cua client
-        bll_LANAudioServer.StartRecordingAndSending();
+        bll_LANAudioServer.startRecordingAndSending();
     }
 
     private static ServerAudioBLL instance = null;
@@ -49,24 +49,24 @@ public class ServerAudioBLL implements IClientAudioBLL {
         this.port = port;
     }
 
-    public void StartReceivingAndSpeaking() {
+    public void startReceivingAndSpeaking() {
         if (lanAudioServerThread == null)
-            StartSocketAndInitAudio();
+            startSocketAndInitAudio();
         lanAudioServerThread.ReceiveAndSpeak();
     }
 
-    public void StopReceivingAndSpeaking() {
+    public void stopReceivingAndSpeaking() {
         if (lanAudioServerThread != null) {
             lanAudioServerThread.StopReceiveAndSpeak();
         }
     }
 
-    public void StartRecordingAndSending() {
+    public void startRecordingAndSending() {
         if (lanAudioServerThread != null)
             lanAudioServerThread.RecordAndSend();
     }
 
-    public void StopRecordingAndSending() {
+    public void stopRecordingAndSending() {
         if (lanAudioServerThread != null)
             lanAudioServerThread.StopRecordAndSend();
     }
@@ -76,7 +76,7 @@ public class ServerAudioBLL implements IClientAudioBLL {
             lanAudioServerThread.StopLANAudioServer();
     }
 
-    public void StartSocketAndInitAudio() {
+    public void startSocketAndInitAudio() {
         try {
             lanAudioServerThread = new AudioServer(port);
         } catch (Exception ex) {
@@ -87,7 +87,7 @@ public class ServerAudioBLL implements IClientAudioBLL {
 
     public void SetClientIPAndPort(String clientIP, int clientPort) {
         if (lanAudioServerThread == null)
-            StartSocketAndInitAudio();
+            startSocketAndInitAudio();
         try {
             InetAddress ip = InetAddress.getByName(clientIP);
             lanAudioServerThread.SetClientIPAndPort(ip, clientPort);
@@ -99,7 +99,7 @@ public class ServerAudioBLL implements IClientAudioBLL {
 
     public void SetClientIPAndPort(InetAddress clientIP, int clientPort) {
         if (lanAudioServerThread == null)
-            StartSocketAndInitAudio();
+            startSocketAndInitAudio();
         try {
             lanAudioServerThread.SetClientIPAndPort(clientIP, clientPort);
         } catch (Exception e) {

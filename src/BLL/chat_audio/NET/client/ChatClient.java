@@ -78,7 +78,7 @@ public class ChatClient extends Thread implements LANChat {
             oStream.writeUTF(fileName);
             oStream.writeLong(file.length());
 
-            byte[] buffer = new byte[1024 * 1024];// max 4GB
+            byte[] buffer = new byte[1024 * 1024];
             while ((bytes = fileInputStream.read(buffer)) != -1) {
                 oStream.write(buffer, 0, bytes);
                 oStream.flush();
@@ -131,7 +131,7 @@ public class ChatClient extends Thread implements LANChat {
         }
     }
 
-    public int GetClientChatSocketPort() {
+    public int getClientChatSocketPort() {
         // TODO Auto-generated method stub
         return socket.getLocalPort();
     }

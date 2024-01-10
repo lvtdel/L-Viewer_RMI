@@ -1,12 +1,12 @@
 package BLL.chat_audio.client;
 
-import BLL.chat_audio.IClientChatBLL;
+import BLL.chat_audio.IChatBLL;
 import BLL.chat_audio.NET.client.ChatClient;
 
 import java.net.InetAddress;
 import java.nio.file.Path;
 
-public class ClientChatBLL implements IClientChatBLL {
+public class ClientChatBLL implements IChatBLL {
     private ChatClient lanClientChat = null;
     private NET.SocketInfor serverInfor = null;
 
@@ -19,13 +19,13 @@ public class ClientChatBLL implements IClientChatBLL {
     }
 
     @Override
-    public void Start() {
+    public void start() {
         lanClientChat = new ChatClient(serverInfor);
         lanClientChat.start();
     }
 
     @Override
-    public void Stop() {
+    public void stop() {
         if (lanClientChat != null) {
             lanClientChat.stopChat();
             lanClientChat = null;
@@ -45,6 +45,6 @@ public class ClientChatBLL implements IClientChatBLL {
     }
 
     public int GetClientChatSocketPort() {
-        return lanClientChat.GetClientChatSocketPort();
+        return lanClientChat.getClientChatSocketPort();
     }
 }

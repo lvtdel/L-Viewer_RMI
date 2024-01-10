@@ -1,11 +1,11 @@
 package BLL.server;
 
-import BLL.chat_audio.IClientChatBLL;
+import BLL.chat_audio.IChatBLL;
 import BLL.chat_audio.NET.server.ChatServer;
 
 import java.nio.file.Path;
 
-public class ServerChatBLL implements IClientChatBLL {
+public class ServerChatBLL implements IChatBLL {
     private ChatServer serverChat = null;
     private int serverPort;
 
@@ -14,14 +14,14 @@ public class ServerChatBLL implements IClientChatBLL {
     }
 
     @Override
-    public void Start() {
+    public void start() {
         serverChat = new ChatServer(serverPort);
         serverChat.start();//Start server and receive message
     }
 
     //Stop server
     @Override
-    public void Stop() {
+    public void stop() {
         if (serverChat != null) {
             serverChat.stopChat();
             serverChat = null;
