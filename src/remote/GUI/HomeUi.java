@@ -1,6 +1,10 @@
 package remote.GUI;
 
 
+import remote.BLL.HomeBLL;
+import remote.ultil.Ip;
+import remote.ultil.Pass;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
@@ -10,70 +14,62 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ResourceBundle;
 
 public class HomeUi extends JFrame {
 
-    private final JPanel contentPane;
+    private JPanel contentPane;
 
     public static boolean isOpened = false;
     //    private final BLL_LANForm bll_LANForm;
-    public final JTextField txtYourIP;
-    public final JTextField txtYourPort;
-    public final JTextField txtYourPassword;
-    public final JTextField txtPartnerIP;
-    public final JTextField txtPartnerPort;
-    public final JTextField txtPartnerPassword;
-    private final JLabel lblStatus;
-    private final JLabel lblAllowConnection;
-    private final JLabel lblRemoteAnother;
-    private final JLabel lblInfoAllowConnection;
-    private final JLabel lblInfoRemoteAnother;
-    private final JLabel lblYourIP;
-    private final JLabel lblYourPort;
-    private final JLabel lblYourPassword;
-    public final JButton btnOpenConnect;
-    private final JLabel lblPartnerIP;
-    private final JLabel lblPartnerPort;
-    private final JLabel lblPartnerPassword;
-    public final JButton btnConnect;
+    public JTextField txtYourIP;
+    public JTextField txtYourPort;
+    public JTextField txtYourPassword;
+    public JTextField txtPartnerIP;
+    public JTextField txtPartnerPort;
+    public JTextField txtPartnerPassword;
+    private JLabel lblStatus;
+    private JLabel lblAllowConnection;
+    private JLabel lblRemoteAnother;
+    private JLabel lblInfoAllowConnection;
+    private JLabel lblInfoRemoteAnother;
+    private JLabel lblYourIP;
+    private JLabel lblYourPort;
+    private JLabel lblYourPassword;
+    public JButton btnOpenConnect;
+    private JLabel lblPartnerIP;
+    private JLabel lblPartnerPort;
+    private JLabel lblPartnerPassword;
+    public JButton btnConnect;
 
-    public final JButton btnOpenchat;
+    public JButton btnOpenChat;
 
-    private String msgPortInvalid = "";
-    private String msgOpenConnectFailed = "";
+
+    private HomeBLL homeBLL;
 
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                //LANForm frame = new LANForm();
-                //frame.setVisible(true);
-                HomeUi.OpenForm();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+//        EventQueue.invokeLater(() -> {
+//            try {
+//                //LANForm frame = new LANForm();
+//                //frame.setVisible(true);
+//                HomeUi.getInstance();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
+        HomeUi.getInstance().showWindow();
     }
 
-    public static void OpenForm() {
-        if (isOpened)
-            return;
-        else {
-            isOpened = true;
+    private static volatile HomeUi instance = null;
+
+    public static HomeUi getInstance() {
+        if (instance == null) {
             instance = new HomeUi();
-            instance.setVisible(true);
-
-            //main(args);
         }
-    }
 
-    private static HomeUi instance = null;
-
-    public static HomeUi GetInstance() {
         return instance;
     }
 
@@ -84,14 +80,51 @@ public class HomeUi extends JFrame {
     /**
      * Create the frame.
      */
-    public HomeUi() {
-        setResizable(false);
-        setTitle("L-Viewer");
-        setBackground(Color.LIGHT_GRAY);
-        setForeground(new Color(191, 205, 219));
-//        bll_LANForm = new BLL_LANForm();
-        //Event
+    private HomeUi() {
+        init();
+        createUi();
+        initValue();
+        addAction();
+    }
 
+
+    private void init() {
+        this.homeBLL = new HomeBLL() {
+            @Override
+            public void notification(String mess) {
+                showMessage(mess, "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            @Override
+            public void onOpenServerSuccess() {
+                btnOpenConnect.setBackground(Color.yellow);
+                showStatus("Connection opened");
+            }
+
+            @Override
+            public void onDisableServer() {
+                btnOpenConnect.setBackground(SystemColor.control);
+                showStatus("Connection closed");
+            }
+        };
+    }
+
+    private void addAction() {
+        btnOpenChat.addActionListener(arg0 -> {
+            System.out.println("Open chat clicked");
+        });
+
+        btnConnect.addActionListener(e -> {
+            String host = txtPartnerIP.getText();
+            int port = Integer.parseInt(txtPartnerPort.getText());
+            String pass = txtPartnerPassword.getText();
+
+            homeBLL.onConnectClick(host, port, pass);
+        });
+
+        btnOpenConnect.addActionListener(e -> {
+            homeBLL.onAllowConnectClick();
+        });
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -99,8 +132,39 @@ public class HomeUi extends JFrame {
                 isOpened = false;
                 instance = null;
             }
-
         });
+    }
+
+    private void initValue() {
+        String myIp = Ip.getMyIPv4();
+        String myPassword = Pass.randomPassword(4);
+        txtYourIP.setText(myIp);
+        txtYourPassword.setText(myPassword);
+
+        txtPartnerIP.setText(myIp);
+        txtPartnerPassword.setText(myPassword);
+
+        showStatus("Connection closed");
+    }
+
+    public void showWindow() {
+        setVisible(true);
+    }
+
+    public void showStatus(String status) {
+        lblStatus.setText("Status: " + status);
+    }
+
+    public void showMessage(String message, String tile, int type) {
+        JOptionPane.showMessageDialog(instance, message, tile, type);
+    }
+
+    private void createUi() {
+        setResizable(false);
+        setTitle("L-Viewer");
+        setBackground(Color.LIGHT_GRAY);
+        setForeground(new Color(191, 205, 219));
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         setBounds(100, 100, 860, 414);
@@ -156,17 +220,17 @@ public class HomeUi extends JFrame {
         btnOpenConnect.setFocusable(false);
         btnOpenConnect.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
-        btnOpenchat = new JButton("");
-        btnOpenchat.setBorder(null);
-        btnOpenchat.setBackground(new Color(248, 248, 255));
+        btnOpenChat = new JButton("");
+        btnOpenChat.setBorder(null);
+        btnOpenChat.setBackground(new Color(248, 248, 255));
         try {
-            btnOpenchat.setIcon(new ImageIcon(ImageIO.read(new File("./resource/chatIcon.png"))));
+            btnOpenChat.setIcon(new ImageIcon(ImageIO.read(new File("./resource/chatIcon.png"))));
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             System.out.println("Can not load icon!");
         }
-        btnOpenchat.setFocusable(false);
-        btnOpenchat.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        btnOpenChat.setFocusable(false);
+        btnOpenChat.setFont(new Font("Tahoma", Font.PLAIN, 16));
 
 
         lblInfoAllowConnection = new JLabel("<html>Please click \"Allow Connection\" and send your IP, port, password to your partner if you want they to remote your computer.</html>");
@@ -196,7 +260,7 @@ public class HomeUi extends JFrame {
                                                         .addComponent(txtYourIP, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                                                         .addGroup(Alignment.TRAILING, gl_pnlOpenCnn.createSequentialGroup()
                                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                                .addComponent(btnOpenchat, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(btnOpenChat, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                                 .addComponent(btnOpenConnect))
                                                         .addComponent(txtYourPassword, 238, 238, Short.MAX_VALUE)
@@ -225,7 +289,7 @@ public class HomeUi extends JFrame {
                                 .addGap(18)
                                 .addGroup(gl_pnlOpenCnn.createParallelGroup(Alignment.LEADING)
                                         .addComponent(btnOpenConnect)
-                                        .addComponent(btnOpenchat, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(btnOpenChat, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
                                 .addGap(17))
         );
         pnlOpenCnn.setLayout(gl_pnlOpenCnn);
@@ -256,7 +320,7 @@ public class HomeUi extends JFrame {
         txtPartnerIP.setColumns(10);
 
         txtPartnerPort = new JTextField();
-        txtPartnerPort.setText("1999");
+        txtPartnerPort.setText("1111");
         txtPartnerPort.setBounds(141, 119, 216, 26);
         txtPartnerPort.setAlignmentX(Component.LEFT_ALIGNMENT);
         txtPartnerPort.setAlignmentY(Component.BOTTOM_ALIGNMENT);
@@ -277,12 +341,6 @@ public class HomeUi extends JFrame {
         btnConnect.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         btnConnect.setFocusable(false);
         btnConnect.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        btnConnect.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent arg0) {
-//                bll_LANForm.ConnectAndShowRemoteForm(txtPartnerIP.getText(), txtPartnerPort.getText(), txtPartnerPassword.getText(), language);
-            }
-        });
 
         lblInfoRemoteAnother = new JLabel("<html>Please enter IP, port, password of the computer that you want to remote.</html>");
         lblInfoRemoteAnother.setBackground(new Color(248, 248, 255));
@@ -368,61 +426,4 @@ public class HomeUi extends JFrame {
         contentPane.add(panel);
         contentPane.add(statusPanel);
     }
-
-
-    public void ShowStatus(String status) {
-        lblStatus.setText("Status: " + status);
-    }
-
-    public void ShowMessage(String message, String tile, int type) {
-        JOptionPane.showMessageDialog(instance, message, tile, type);
-    }
-
-
-    private ResourceBundle languageRB = null;
-
-//    public String GetLanguageString(String key) {
-//        if (languageRB == null)
-//            languageRB = ResourceBundle.getBundle("internationalization.message.language", new Locale("en"));
-//        return languageRB.getString(key);
-//    }
-
-    private int language = 0;
-
-//    public void SetLanguage(int language) {
-//        this.language = language;
-//        Locale locale = switch (language) {
-//            case 0 ->//en
-//                    new Locale("en");
-//            case 1 ->//vi
-//                    new Locale("vi");
-//            default -> new Locale("en");
-//        };
-//        languageRB = ResourceBundle.getBundle("internationalization.message.language", locale);
-//        lblAllowConnection.setText(languageRB.getString("lblAllowConnection"));
-//        lblRemoteAnother.setText(languageRB.getString("lblRemoteAnother"));
-//        lblInfoAllowConnection.setText(languageRB.getString("lblInfoAllowConnection"));
-//        lblInfoRemoteAnother.setText(languageRB.getString("lblInfoRemoteAnother"));
-//        lblYourIP.setText(languageRB.getString("lblYourIP"));
-//        lblYourPort.setText(languageRB.getString("lblYourPort"));
-//        lblYourPassword.setText(languageRB.getString("lblYourPassword"));
-//        btnOpenConnect.setText(languageRB.getString("btnOpenConnect"));
-//        lblPartnerIP.setText(languageRB.getString("lblPartnerIP"));
-//        lblPartnerPort.setText(languageRB.getString("lblPartnerPort"));
-//        lblPartnerPassword.setText(languageRB.getString("lblPartnerPassword"));
-//        btnConnect.setText(languageRB.getString("btnConnect"));
-//
-//        txtYourIP.setToolTipText(languageRB.getString("tipYourIP"));
-//        txtYourPort.setToolTipText(languageRB.getString("tipYourPort"));
-//        txtYourPassword.setToolTipText(languageRB.getString("tipYourPassword"));
-//        btnOpenConnect.setToolTipText(languageRB.getString("tipAllowConnection"));
-//        txtPartnerIP.setToolTipText(languageRB.getString("tipPartnerIP"));
-//        btnOpenchat.setToolTipText(languageRB.getString("tipOpenChat"));
-//        txtPartnerPort.setToolTipText(languageRB.getString("tipPartnerPort"));
-//        txtPartnerPassword.setToolTipText(languageRB.getString("tipPartnerPassword"));
-//        btnConnect.setToolTipText(languageRB.getString("tipStartRemote"));
-//
-//        msgOpenConnectFailed = languageRB.getString("msgOpenConnectFailed");
-//        msgPortInvalid = languageRB.getString("msgPortInvalid");
-//    }
 }

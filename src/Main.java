@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws MalformedURLException, RemoteException, AWTException {
-        RmiServer rmiServer = new RmiServer();
+        RmiServer rmiServer = RmiServer.getInstance();
         rmiServer.startBindingOnRmiServer("localhost", 1111);
     }
 }

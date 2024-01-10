@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDesktop {
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     private final Robot mr_robot;
 
@@ -22,7 +22,7 @@ public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDes
 
     @Override
     public boolean verify(String pass) throws RemoteException {
-        return pass.equals(HomeUi.GetInstance().txtYourPassword.getText());
+        return pass.equals(HomeUi.getInstance().txtYourPassword.getText());
     }
 
     @Override

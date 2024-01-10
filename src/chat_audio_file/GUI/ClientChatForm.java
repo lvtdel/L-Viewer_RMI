@@ -1,15 +1,14 @@
-package GUI;
+package chat_audio_file.GUI;
 
 import BLL.client.BLL_LANAudioClient;
-import BLL.client.BLL_LANClientChat;
-
+import chat_audio_file.BLL.client.BLL_LANClientChat;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class ClientChatForm extends ChatForm {
+public class ClientChatForm extends GUI.ChatForm {
     /**
      * Launch the application.
      */

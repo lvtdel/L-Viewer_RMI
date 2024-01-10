@@ -2,7 +2,7 @@ package BLL.server;
 
 import BLL.BLL_LANChat;
 import NET.LANSocketInfor;
-import NET.server.LANServerChat;
+import chat_audio_file.NET.server.LANServerChat;
 
 import java.nio.file.Path;
 

@@ -1,4 +1,4 @@
-package GUI;
+package chat_audio_file.GUI;
 
 import BLL.server.BLL_LANAudioServer;
 import BLL.server.BLL_LANServerChat;
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ServerChatForm extends ChatForm {
+public class ServerChatForm extends GUI.ChatForm {
     /**
      * Launch the application.
      */

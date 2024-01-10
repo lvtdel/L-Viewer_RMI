@@ -3,54 +3,20 @@ package remote.BLL;
 import remote.BLL.rmi.IRemoteDesktop;
 import remote.BLL.rmi.RmiClient;
 import remote.BLL.rmi.RmiServer;
-import remote.GUI.HomeUi;
 import remote.GUI.RemoteScreenForm;
-import remote.ultil.Ip;
-import remote.ultil.Pass;
 
-public class HomeBLL {
-
-    HomeUi homeUi;
+public abstract class HomeBLL {
     RmiServer rmiServer;
 
-    public HomeBLL(RmiServer rmiServer) {
-        this.rmiServer = rmiServer;
-
-        HomeUi.OpenForm();
-        homeUi = HomeUi.GetInstance();
-
-        homeUi.btnOpenchat.addActionListener(arg0 -> {
-//                bll_LANForm.ReOpenChat();
-            onOpenChatClick();
-        });
-
-        homeUi.btnConnect.addActionListener(e -> {
-            String host = homeUi.txtPartnerIP.getText();
-            int port = Integer.parseInt(homeUi.txtPartnerPort.getText());
-            String pass = homeUi.txtPartnerPassword.getText();
-
-            onConnectClick(host, port, pass);
-        });
-
-        homeUi.btnOpenConnect.addActionListener(e -> {
-            onAllowConnectClick();
-        });
-
-        setLabel();
+    public HomeBLL() {
+        this.rmiServer = RmiServer.getInstance();
     }
 
-    private void setLabel() {
-        String ip = Ip.GetMyIPv4();
-        String pass = Pass.RandomPassword(6);
-        String port = "1111";
+    public abstract void notification(String mess);
+    public abstract void onOpenServerSuccess();
+    public abstract void onDisableServer();
 
-        homeUi.txtYourIP.setText(ip);
-        homeUi.txtYourPassword.setText(pass);
-        homeUi.txtYourPort.setText(port);
-
-    }
-
-    private void onConnectClick(String host, int port, String pass) {
+    public void onConnectClick(String host, int port, String pass) {
         System.out.println("Connect clicked");
 
         RmiClient rmiClient = new RmiClient();
@@ -62,7 +28,10 @@ public class HomeBLL {
             System.out.println("verify: " + verify);
 
             if (verify) {
-                RemoteScreenBLL.create(new RemoteScreenForm(), remoteDesktop);
+//                RemoteScreenBLL.create(new RemoteScreenForm(), remoteDesktop);
+                new RemoteScreenForm(remoteDesktop);
+            } else {
+                notification("Verify failed!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +44,10 @@ public class HomeBLL {
         try {
             if (this.rmiServer.isBinding()) {
                 this.rmiServer.stopBindingOnRmiServer();
+                onDisableServer();
             } else {
                 this.rmiServer.startBindingOnRmiServer("localhost", 1111);
+                onOpenServerSuccess();
                 System.out.println("Server listening");
             }
         } catch (Exception e) {
@@ -87,11 +58,6 @@ public class HomeBLL {
 
     public void onOpenChatClick() {
         System.out.println("OpenChat clicked");
-
-    }
-
-    public static void main(String[] args) {
-        new HomeBLL(new RmiServer());
     }
 }
 

@@ -1,10 +1,10 @@
-package NET.client;
+package chat_audio_file.NET.client;
 
-import GUI.ClientChatForm;
 import NET.LANChat;
 import NET.LANSocketInfor;
 import NET.constants.LANChatConstants;
 import NET.util.FileSupport;
+import chat_audio_file.GUI.ClientChatForm;
 
 import java.io.*;
 import java.net.Socket;

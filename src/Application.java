@@ -2,6 +2,7 @@ import remote.BLL.HomeBLL;
 import remote.BLL.rmi.IRemoteDesktop;
 import remote.BLL.rmi.RmiClient;
 import remote.BLL.rmi.RmiServer;
+import remote.GUI.HomeUi;
 import remote.GUI.RemoteScreenForm;
 
 import javax.imageio.ImageIO;
@@ -45,6 +46,8 @@ public class Application {
 
 //        remoteDesktop.keyPressedServer(KeyEvent.VK_A);
 
-        new HomeBLL(new RmiServer());
+//        new HomeBLL(new RmiServer());
+
+        HomeUi.getInstance().showWindow();
     }
 }

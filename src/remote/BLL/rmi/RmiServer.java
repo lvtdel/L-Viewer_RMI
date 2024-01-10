@@ -12,9 +12,19 @@ public class RmiServer {
     private boolean is_binding;
 
 
-    public RmiServer() {
+    private RmiServer() {
         this.url = null;
         this.is_binding = false;
+    }
+
+    private static volatile RmiServer instance;
+
+    public static RmiServer getInstance() {
+        if (instance == null) {
+            instance = new RmiServer();
+        }
+
+        return instance;
     }
 
     public void startBindingOnRmiServer(String host, int port) throws RemoteException, MalformedURLException, AWTException {

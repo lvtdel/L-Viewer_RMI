@@ -1,8 +1,8 @@
-package BLL.client;
+package chat_audio_file.BLL.client;
 
 import BLL.BLL_LANChat;
 import NET.LANSocketInfor;
-import NET.client.LANClientChat;
+import chat_audio_file.NET.client.LANClientChat;
 
 import java.net.InetAddress;
 import java.nio.file.Path;

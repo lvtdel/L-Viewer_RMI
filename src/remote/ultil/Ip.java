@@ -29,7 +29,7 @@ public class Ip {
 //    }
 
     public static void main(String[] args) {
-        String localIPv4Address = GetMyIPv4();
+        String localIPv4Address = getMyIPv4();
         if (localIPv4Address != null) {
             System.out.println("Địa chỉ IPv4 local của bạn là: " + localIPv4Address);
         } else {
@@ -37,7 +37,7 @@ public class Ip {
         }
     }
 
-    public static String GetMyIPv4() {
+    public static String getMyIPv4() {
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
 
