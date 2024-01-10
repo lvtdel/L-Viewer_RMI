@@ -1,15 +1,4 @@
-import remote.BLL.HomeBLL;
-import remote.BLL.rmi.IRemoteDesktop;
-import remote.BLL.rmi.RmiClient;
-import remote.BLL.rmi.RmiServer;
-import remote.GUI.HomeUi;
-import remote.GUI.RemoteScreenForm;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
+import Presentation.HomeUi;
 
 public class Application {
     public static void main(String[] args) throws Exception {

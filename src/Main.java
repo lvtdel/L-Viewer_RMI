@@ -1,4 +1,4 @@
-import remote.BLL.rmi.RmiServer;
+import BLL.remote.rmi.RmiServer;
 
 import java.awt.*;
 import java.net.MalformedURLException;
