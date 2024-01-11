@@ -34,7 +34,7 @@ public abstract class HomeBLL {
 //                RemoteScreenBLL.create(new RemoteScreenForm(), remoteDesktop);
                 new RemoteScreenUi(remoteDesktop);
 
-                openClientChat();
+                openClientChat(remoteDesktop);
             } else {
                 notification("Verify failed!");
             }
@@ -44,12 +44,13 @@ public abstract class HomeBLL {
         }
     }
 
-    private void openClientChat() {
+    private void openClientChat(IRemoteDesktop remoteDesktop) {
         EventQueue.invokeLater(() -> {
             try {
-                ClientChatUi.createInstanceClientChatForm("192.168.1.8", 2001);
-                ClientChatUi frame = ClientChatUi.getInstance();
-                frame.setVisible(true);
+//                ClientChatUi.createInstanceClientChatForm("192.168.1.8", 2001);
+                new ClientChatUi(remoteDesktop).setVisible(true);
+//                ClientChatUi frame = ClientChatUi.getInstance();
+//                frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }

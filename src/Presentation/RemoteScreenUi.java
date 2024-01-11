@@ -18,73 +18,73 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class RemoteScreenUi extends JFrame {
-    public static void main(String[] args) {
-        OpenForm("192.168.1.135", "1999", "ahihi", 1);
-        //                    Image dimg = oip.image.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-//                    label.setIcon(new ImageIcon(dimg));
-    }
+//    public static void main(String[] args) {
+//        OpenForm("192.168.1.135", "1999", "ahihi", 1);
+//        //                    Image dimg = oip.image.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+////                    label.setIcon(new ImageIcon(dimg));
+//    }
 
     //STATIC
     //Check trang thai form chi mo 1 lan 1 form
     public static RemoteScreenUi instance;
     public static boolean isOpened = false;
 
-    public static void OpenForm(String ip, String port, String pass, int language) {
-        if (isOpened)
-            return;
-        else {
-            EventQueue.invokeLater(() -> {
-                try {
-                    instance = new RemoteScreenUi(new IRemoteDesktop() {
-                        @Override
-                        public boolean verify(String pass) throws RemoteException {
-                            return false;
-                        }
-
-                        @Override
-                        public byte[] takeScreenshotServer(String quality) throws Exception {
-                            return new byte[0];
-                        }
-
-                        @Override
-                        public void mouseMovedServer(double x, double y) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void mousePressedServer(int button) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void mouseReleasedServer(int button) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void mouseWheelServer(int wheel_amt) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void keyPressedServer(int keycode) throws RemoteException {
-
-                        }
-
-                        @Override
-                        public void keyReleasedServer(int keycode) throws RemoteException {
-
-                        }
-                    });
-                    instance.setVisible(true);
-                    instance.SetLanguage(language);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-    }
+//    public static void OpenForm(String ip, String port, String pass, int language) {
+//        if (isOpened)
+//            return;
+//        else {
+//            EventQueue.invokeLater(() -> {
+//                try {
+//                    instance = new RemoteScreenUi(new IRemoteDesktop() {
+//                        @Override
+//                        public boolean verify(String pass) throws RemoteException {
+//                            return false;
+//                        }
+//
+//                        @Override
+//                        public byte[] takeScreenshotServer(String quality) throws Exception {
+//                            return new byte[0];
+//                        }
+//
+//                        @Override
+//                        public void mouseMovedServer(double x, double y) throws RemoteException {
+//
+//                        }
+//
+//                        @Override
+//                        public void mousePressedServer(int button) throws RemoteException {
+//
+//                        }
+//
+//                        @Override
+//                        public void mouseReleasedServer(int button) throws RemoteException {
+//
+//                        }
+//
+//                        @Override
+//                        public void mouseWheelServer(int wheel_amt) throws RemoteException {
+//
+//                        }
+//
+//                        @Override
+//                        public void keyPressedServer(int keycode) throws RemoteException {
+//
+//                        }
+//
+//                        @Override
+//                        public void keyReleasedServer(int keycode) throws RemoteException {
+//
+//                        }
+//                    });
+//                    instance.setVisible(true);
+//                    instance.SetLanguage(language);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
+//    }
 
     public static RemoteScreenUi getInstance() {
         return instance;

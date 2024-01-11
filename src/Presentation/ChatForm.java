@@ -25,12 +25,12 @@ public abstract class ChatForm extends JFrame {
     protected JCheckBox chbxMic;
     private JLabel lblPartnerIp;
 
-    public void AddMessage(String message) {
+    public void addMessage(String message) {
         chatData += message + "\n";
         txtChatBox.setText(chatData);
     }
 
-    public void MicStateChange() {
+    public void micStateChange() {
         if (chbxMic.isSelected()) {
             chbxMic.setIcon(new ImageIcon("resource/micOn.png"));
         } else {
@@ -38,7 +38,7 @@ public abstract class ChatForm extends JFrame {
         }
     }
 
-    public void SpeakerStateChange() {
+    public void speakerStateChange() {
         if (chbxSpeaker.isSelected()) {
             chbxSpeaker.setIcon(new ImageIcon("resource/speakerOn.png"));
         } else {
@@ -49,16 +49,7 @@ public abstract class ChatForm extends JFrame {
     /**
      * Create the frame.
      */
-    public abstract void OpenAudioChat();
 
-    public abstract void CloseAudioChat();
-
-    public abstract void CloseChat();
-
-    public abstract void KhoiTaoEventSend();
-
-    public abstract void SendMessageInTextBox();
-    public abstract void khoiTaoEventSendFile();
 
     public String getPath() {
         JFileChooser fileChooser = new JFileChooser();
@@ -77,7 +68,7 @@ public abstract class ChatForm extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent arg0) {
-                OpenAudioChat();
+//                OpenAudioChat();
                 System.out.println("Chat form duoc open");
             }
 
@@ -92,7 +83,7 @@ public abstract class ChatForm extends JFrame {
         CreateChatFormGUI();
     }
 
-    public void AddMessage(String name, String message) {
+    public void addMessage(String name, String message) {
         chatData += name + ": " + message + "\n";
         txtChatBox.setText(chatData);
     }
@@ -180,20 +171,11 @@ public abstract class ChatForm extends JFrame {
 
         chbxMic = new JCheckBox("");
         chbxMic.setIcon(new ImageIcon("resource\\micOn.png"));
-        chbxMic.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent arg0) {
-                MicStateChange();
-            }
-        });
 
         chbxSpeaker = new JCheckBox("");
         chbxSpeaker.setIcon(new ImageIcon("resource\\speakerOn.png"));
         chbxSpeaker.setSelected(true);
-        chbxSpeaker.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent arg0) {
-                SpeakerStateChange();
-            }
-        });
+
         panel.add(chbxSpeaker);
         chbxSpeaker.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panel.add(chbxMic);
@@ -210,6 +192,11 @@ public abstract class ChatForm extends JFrame {
         txtChatBox.setWrapStyleWord(true);
         txtChatBox.setText(chatData);
         contentPane.setLayout(gl_contentPane);
+    }
+
+    protected void addAction() {
+        chbxMic.addItemListener(arg0 -> micStateChange());
+        chbxSpeaker.addItemListener(arg0 -> speakerStateChange());
     }
 
     public void SetLblPartnerIP(String ip) {

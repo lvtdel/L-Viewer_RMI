@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-import static Presentation.RemoteScreenUi.OpenForm;
-
 
 public class TestUI {
 
@@ -50,7 +48,7 @@ public class TestUI {
                 e.printStackTrace();
             }
 
-            OpenForm("192.168.1.135", "1999", "ahihi", 1);
+//            OpenForm("192.168.1.135", "1999", "ahihi", 1);
 
 //            try {
 //                Thread.sleep(3000);

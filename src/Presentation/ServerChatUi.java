@@ -1,8 +1,8 @@
 package Presentation;
 
-import BLL.chat_audio.server.ServerAudioBLL;
+import BLL.remote.ServerChatBLL;
+import BLL.remote.rmi.ClientCallback;
 
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -11,18 +11,18 @@ public class ServerChatUi extends ChatForm {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ServerChatUi.CreateInstanceServerChatForm(2001);
-                    ServerChatUi frame = ServerChatUi.GetInstance();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        EventQueue.invokeLater(() -> {
+//            try {
+//                ServerChatUi.CreateInstanceServerChatForm(2001);
+//                ServerChatUi frame = ServerChatUi.GetInstance();
+//                frame.setVisible(true);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
+
+    ServerChatBLL serverChatBLL;
 
     public static ServerChatUi instance = null;
 
@@ -30,73 +30,61 @@ public class ServerChatUi extends ChatForm {
         return instance;
     }
 
-    public static void CreateInstanceServerChatForm(int serverPort) {
-        instance = new ServerChatUi(serverPort);
-        System.out.println("Da CreateInstanceServerChatForm ");
-    }
-
-    private ServerChatUi(int serverPort) {
+    public ServerChatUi(ClientCallback clientCallback) {
         super();
-        KhoiTaoEventSend();
-        khoiTaoEventSendFile();
-        StartServerChatSocket(serverPort);
-        setTitle("Chat (server)");
+
+        init(clientCallback);
+
+//        KhoiTaoEventSend();
+//        khoiTaoEventSendFile();
+//        StartClientChatSocket(IP, port);
+        setTitle("Chat (client)");
+//        SetLblPartnerIP(IP);
+
+        super.addAction();
+        addAction();
+        setVisible(true);
     }
 
-    @Override
-    public void MicStateChange() {
-        // TODO Auto-generated method stub
-        super.MicStateChange();
-        try {
-            if (chbxMic.isSelected()) {
-                System.out.println("Server mic open");
-                ServerAudioBLL.GetInstance().startRecordingAndSending();
-            } else {
-                System.out.println("Server mic close");
-                ServerAudioBLL.GetInstance().stopRecordingAndSending();
+
+    private void init(ClientCallback clientCallback) {
+        this.serverChatBLL = new ServerChatBLL(clientCallback) {
+            @Override
+            public void onReceiveMess(String mess) {
+                addMessage("Partner", mess);
             }
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
 
-    }
-
-    @Override
-    public void SpeakerStateChange() {
-        // TODO Auto-generated method stub
-        super.SpeakerStateChange();
-        try {
-            if (chbxSpeaker.isSelected()) {
-                System.out.println("Server speaker open");
-                ServerAudioBLL.GetInstance().startReceivingAndSpeaking();
-
-            } else {
-                System.out.println("Server speaker close");
-                ServerAudioBLL.GetInstance().stopReceivingAndSpeaking();
+            @Override
+            public void notification(String mess) {
+                System.out.println("Server chatUI notification:" + mess);
+                addMessage("NOTIF: ", mess);
             }
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
 
+            @Override
+            public void onSendFileSuccess(String path) {
+                String mess = "Đã gửi 1 tệp tin: " + path;
+
+                addMessage("Me", mess);
+            }
+        };
     }
 
-    @Override
-    public void KhoiTaoEventSend() {
-        btnSendFile.addActionListener(e -> {});
+    protected void addAction() {
         //Khoi tao event send
-        btnSend.addActionListener(e -> SendMessageInTextBox());
+        btnSend.addActionListener(e -> sendMessageInTextBox());
         //Cho textbox
         txtText.addKeyListener(new KeyAdapter() {
             private boolean isShift = false;
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == 10 && !isShift) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && !isShift) {
                     int length = txtText.getText().length();
-                    txtText.setText(txtText.getText().substring(0, length - 1));
-                    SendMessageInTextBox();
+                    txtText.setText(txtText.getText().substring(0, length - 1)); //Cắt \n
+
+                    sendMessageInTextBox();
                     txtText.setText("");
-                } else if (e.getKeyCode() == 10 && isShift) {
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER && isShift) {
                     txtText.append("\n");
                 }
                 if (e.getKeyCode() == 16)
@@ -108,90 +96,41 @@ public class ServerChatUi extends ChatForm {
                 if (e.getKeyCode() == 16 && !isShift)
                     isShift = true;
             }
-
         });
+
+        btnSendFile.addActionListener(e -> {
+            String path = super.getPath();
+
+            serverChatBLL.onSendFileClick(path);
+        });
+
     }
 
     @Override
-    public void SendMessageInTextBox() {
+    public void micStateChange() {
+        super.micStateChange();
+        serverChatBLL.onMicStateChange(chbxMic.isSelected());
+    }
+
+    @Override
+    public void speakerStateChange() {
+        super.speakerStateChange();
+    }
+
+    public void sendMessageInTextBox() {
         try {
             if (!txtText.getText().equals("")) {
                 String message = txtText.getText().replace("\n", "\n      ");
+
+                serverChatBLL.onSendMessageActive(message);
+
+                // TODO: replace with addMessage();
                 txtText.setText("");
-                if (bll_LANServerChat != null) {
-                    bll_LANServerChat.sendMessage(message);
-                    chatData += "Me: " + message + "\n";
-                    txtChatBox.setText(chatData);
-                    //System.out.println("Server send: "+message);
-                } else {
-                    System.out.println("No connection");
-                }
+                chatData += "Me: " + message + "\n";
+                txtChatBox.setText(chatData);
             }
         } catch (Exception e) {
             System.out.println("Can not send message!");
         }
-    }
-
-    private BLL.server.ServerChatBLL bll_LANServerChat = null;
-
-    public void StartServerChatSocket(int serverPort) {
-        System.out.println("Start server chat socket");
-        mylocalport = serverPort;
-        bll_LANServerChat = new BLL.server.ServerChatBLL(serverPort);
-        bll_LANServerChat.start();
-    }
-
-    private int mylocalport;
-    private ServerAudioBLL bll_LANAudioServer;
-
-    @Override
-    public void OpenAudioChat() {
-        // TODO Auto-generated method stub
-        try {
-            for (int i = 0; i < 10; i++) {
-                try {
-                    Thread.sleep(500);
-                    if (bll_LANServerChat != null) {
-                        NET.SocketInfor clientChatInfo = bll_LANServerChat.getClientChatInfor();
-                        bll_LANAudioServer = ServerAudioBLL.GetInstance(mylocalport + 1);
-                        bll_LANAudioServer.SetClientIPAndPort(clientChatInfo.getIp(), clientChatInfo.getPort() + 1);
-                        System.out.println("Start client audio at " + (mylocalport + 1));
-                        break;
-                    }
-                } catch (Exception e) {
-                }
-            }
-            bll_LANAudioServer.startReceivingAndSpeaking();
-            bll_LANAudioServer.startRecordingAndSending();
-
-        } catch (Exception e) {
-            System.out.println("Khoi tao voice chat that bai!");
-        }
-    }
-
-    @Override
-    public void CloseAudioChat() {
-        // TODO Auto-generated method stub
-        ServerAudioBLL.RemoveInstance();
-    }
-
-    @Override
-    public void CloseChat() {
-        // TODO Auto-generated method stub
-        bll_LANServerChat.stop();
-        setVisible(false);
-        dispose();
-        instance = null;
-    }
-
-    @Override
-    public void khoiTaoEventSendFile() {
-        btnSendFile.addActionListener(e -> {
-            String path = super.getPath();
-
-            if (path != null && !path.isEmpty()) {
-                bll_LANServerChat.sendFile(path);
-            }
-        });
     }
 }
