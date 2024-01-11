@@ -10,8 +10,8 @@ public interface IRemoteDesktop extends Remote {
     byte[] takeScreenshotServer(String quality) throws Exception;
 
     void mouseMovedServer(double x, double y) throws RemoteException;
-    void mousePressedServer(int buttons) throws RemoteException;
-    void mouseReleasedServer(int buttons) throws RemoteException;
+    void mousePressedServer(int button) throws RemoteException;
+    void mouseReleasedServer(int button) throws RemoteException;
     void mouseWheelServer(int wheel_amt) throws RemoteException;
 
 

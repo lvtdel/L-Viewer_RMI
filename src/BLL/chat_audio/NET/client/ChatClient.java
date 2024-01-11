@@ -3,7 +3,7 @@ package BLL.chat_audio.NET.client;
 import BLL.chat_audio.NET.LANChat;
 import BLL.chat_audio.NET.constants.ChatConstant;
 import util.FileSupport;
-import Presentation.ClientChatForm;
+import Presentation.ClientChatUi;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,7 +15,7 @@ public class ChatClient extends Thread implements LANChat {
     private DataOutputStream oStream = null;
     private final NET.SocketInfor serverInfor;
     private boolean isChatting = false;
-    private ClientChatForm myClientChatForm = null;
+    private ClientChatUi myClientChatForm = null;
 
     public ChatClient(NET.SocketInfor serverInfor) {
         this.serverInfor = serverInfor;
@@ -27,7 +27,7 @@ public class ChatClient extends Thread implements LANChat {
         super.run();
         try {
             System.out.println("Gọi ClientChatForm.getInstance()");
-            myClientChatForm = ClientChatForm.getInstance();
+            myClientChatForm = ClientChatUi.getInstance();
             socket = new Socket(serverInfor.getIp(), serverInfor.getPort());
             System.out.println("Connected: " + socket);
             open();
@@ -94,7 +94,7 @@ public class ChatClient extends Thread implements LANChat {
         String pathSave = FileSupport.saveFile(iStream);
 
         String message = pathSave != null ? "Đã gửi 1 tệp tin: " + pathSave : "Nhận tệp tin thất bại";
-        ClientChatForm.getInstance().AddMessage("Partner", message);
+        ClientChatUi.getInstance().AddMessage("Partner", message);
     }
 
 

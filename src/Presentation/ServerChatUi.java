@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ServerChatForm extends ChatForm {
+public class ServerChatUi extends ChatForm {
     /**
      * Launch the application.
      */
@@ -14,8 +14,8 @@ public class ServerChatForm extends ChatForm {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    ServerChatForm.CreateInstanceServerChatForm(2001);
-                    ServerChatForm frame = ServerChatForm.GetInstance();
+                    ServerChatUi.CreateInstanceServerChatForm(2001);
+                    ServerChatUi frame = ServerChatUi.GetInstance();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -24,18 +24,18 @@ public class ServerChatForm extends ChatForm {
         });
     }
 
-    public static ServerChatForm instance = null;
+    public static ServerChatUi instance = null;
 
-    public static ServerChatForm GetInstance() {
+    public static ServerChatUi GetInstance() {
         return instance;
     }
 
     public static void CreateInstanceServerChatForm(int serverPort) {
-        instance = new ServerChatForm(serverPort);
+        instance = new ServerChatUi(serverPort);
         System.out.println("Da CreateInstanceServerChatForm ");
     }
 
-    private ServerChatForm(int serverPort) {
+    private ServerChatUi(int serverPort) {
         super();
         KhoiTaoEventSend();
         khoiTaoEventSendFile();

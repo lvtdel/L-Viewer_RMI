@@ -3,8 +3,8 @@ package BLL.remote;
 import BLL.remote.rmi.IRemoteDesktop;
 import BLL.remote.rmi.RmiClient;
 import BLL.remote.rmi.RmiServer;
-import Presentation.ClientChatForm;
-import Presentation.RemoteScreenForm;
+import Presentation.ClientChatUi;
+import Presentation.RemoteScreenUi;
 
 import java.awt.*;
 
@@ -32,7 +32,7 @@ public abstract class HomeBLL {
 
             if (verify) {
 //                RemoteScreenBLL.create(new RemoteScreenForm(), remoteDesktop);
-                new RemoteScreenForm(remoteDesktop);
+                new RemoteScreenUi(remoteDesktop);
 
                 openClientChat();
             } else {
@@ -47,8 +47,8 @@ public abstract class HomeBLL {
     private void openClientChat() {
         EventQueue.invokeLater(() -> {
             try {
-                ClientChatForm.createInstanceClientChatForm("192.168.1.8", 2001);
-                ClientChatForm frame = ClientChatForm.getInstance();
+                ClientChatUi.createInstanceClientChatForm("192.168.1.8", 2001);
+                ClientChatUi frame = ClientChatUi.getInstance();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -17,7 +17,7 @@ import java.rmi.RemoteException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class RemoteScreenForm extends JFrame {
+public class RemoteScreenUi extends JFrame {
     public static void main(String[] args) {
         OpenForm("192.168.1.135", "1999", "ahihi", 1);
         //                    Image dimg = oip.image.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
@@ -26,7 +26,7 @@ public class RemoteScreenForm extends JFrame {
 
     //STATIC
     //Check trang thai form chi mo 1 lan 1 form
-    public static RemoteScreenForm instance;
+    public static RemoteScreenUi instance;
     public static boolean isOpened = false;
 
     public static void OpenForm(String ip, String port, String pass, int language) {
@@ -35,7 +35,7 @@ public class RemoteScreenForm extends JFrame {
         else {
             EventQueue.invokeLater(() -> {
                 try {
-                    instance = new RemoteScreenForm(new IRemoteDesktop() {
+                    instance = new RemoteScreenUi(new IRemoteDesktop() {
                         @Override
                         public boolean verify(String pass) throws RemoteException {
                             return false;
@@ -52,12 +52,12 @@ public class RemoteScreenForm extends JFrame {
                         }
 
                         @Override
-                        public void mousePressedServer(int buttons) throws RemoteException {
+                        public void mousePressedServer(int button) throws RemoteException {
 
                         }
 
                         @Override
-                        public void mouseReleasedServer(int buttons) throws RemoteException {
+                        public void mouseReleasedServer(int button) throws RemoteException {
 
                         }
 
@@ -86,7 +86,7 @@ public class RemoteScreenForm extends JFrame {
         }
     }
 
-    public static RemoteScreenForm getInstance() {
+    public static RemoteScreenUi getInstance() {
         return instance;
     }
 
@@ -106,7 +106,7 @@ public class RemoteScreenForm extends JFrame {
 
     RemoteScreenBLL remoteScreenBLL;
 
-    public RemoteScreenForm(IRemoteDesktop remoteDesktop) {
+    public RemoteScreenUi(IRemoteDesktop remoteDesktop) {
         init(remoteDesktop);
 
         setFont(new Font("Tahoma", Font.PLAIN, 16));

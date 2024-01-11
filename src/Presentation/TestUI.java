@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-import static Presentation.RemoteScreenForm.OpenForm;
+import static Presentation.RemoteScreenUi.OpenForm;
 
 
 public class TestUI {

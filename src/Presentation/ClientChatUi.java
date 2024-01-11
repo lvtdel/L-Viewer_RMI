@@ -8,15 +8,15 @@ import java.awt.event.KeyEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class ClientChatForm extends ChatForm {
+public class ClientChatUi extends ChatForm {
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                ClientChatForm.createInstanceClientChatForm("192.168.1.8", 2001);
-                ClientChatForm frame = ClientChatForm.getInstance();
+                ClientChatUi.createInstanceClientChatForm("192.168.1.8", 2001);
+                ClientChatUi frame = ClientChatUi.getInstance();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -25,14 +25,14 @@ public class ClientChatForm extends ChatForm {
     }
 
     private ClientChatBLL bll_LANClientChat = null;
-    public static ClientChatForm instance = null;
+    public static ClientChatUi instance = null;
 
-    public static ClientChatForm getInstance() {
+    public static ClientChatUi getInstance() {
         return instance;
     }
 
     public static void createInstanceClientChatForm(String IP, int port) {
-        instance = new ClientChatForm(IP, port);
+        instance = new ClientChatUi(IP, port);
     }
 
     public static void removeInstance() {
@@ -40,7 +40,7 @@ public class ClientChatForm extends ChatForm {
         instance = null;
     }
 
-    private ClientChatForm(String IP, int port) {
+    private ClientChatUi(String IP, int port) {
         super();
         KhoiTaoEventSend();
         khoiTaoEventSendFile();

@@ -1,7 +1,7 @@
 package BLL.remote.rmi;
 
 import Presentation.HomeUi;
-import Presentation.ServerChatForm;
+import Presentation.ServerChatUi;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -54,13 +54,13 @@ public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDes
     }
 
     @Override
-    public void mousePressedServer(int buttons) throws RemoteException {
-        this.mr_robot.mousePress(buttons);
+    public void mousePressedServer(int button) throws RemoteException {
+        this.mr_robot.mousePress(button);
     }
 
     @Override
-    public void mouseReleasedServer(int buttons) throws RemoteException {
-        this.mr_robot.mouseRelease(buttons);
+    public void mouseReleasedServer(int button) throws RemoteException {
+        this.mr_robot.mouseRelease(button);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDes
     private void openServerChat() {
         EventQueue.invokeLater(() -> {
             try {
-                ServerChatForm.CreateInstanceServerChatForm(2001);
-                ServerChatForm frame = ServerChatForm.GetInstance();
+                ServerChatUi.CreateInstanceServerChatForm(2001);
+                ServerChatUi frame = ServerChatUi.GetInstance();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
