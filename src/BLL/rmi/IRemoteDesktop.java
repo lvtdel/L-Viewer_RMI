@@ -1,4 +1,4 @@
-package BLL.remote.rmi;
+package BLL.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -23,7 +23,7 @@ public interface IRemoteDesktop extends Remote {
     void keyReleasedServer(int keycode) throws RemoteException;
 
 
-    void registerChat(ClientCallback clientCallback) throws RemoteException;
+    void registerChat(IClientCallback clientCallback) throws RemoteException;
 
     void receiveMessageServer(String mess) throws RemoteException;
 

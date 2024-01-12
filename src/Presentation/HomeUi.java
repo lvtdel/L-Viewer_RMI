@@ -1,7 +1,7 @@
 package Presentation;
 
 
-import BLL.remote.HomeBLL;
+import BLL.HomeBLL;
 import util.IpAddress;
 import util.Password;
 

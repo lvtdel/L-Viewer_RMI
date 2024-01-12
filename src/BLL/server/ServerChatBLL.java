@@ -1,12 +1,10 @@
-package BLL.remote;
+package BLL.server;
 
+import BLL.constants.ChatConstant;
 import util.Audio;
-import BLL.remote.rmi.ClientCallback;
+import BLL.rmi.IClientCallback;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.nio.file.Files;
@@ -16,18 +14,55 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static util.FileSupport.saveToFile;
+
 public abstract class ServerChatBLL {
 
-    ClientCallback clientCallback;
+    IClientCallback clientCallback;
+    IServerChatBLLCallback serverChatBLLCallback;
     boolean shouldRecording;
 
-    public ServerChatBLL(ClientCallback clientCallback) {
+    public ServerChatBLL(IClientCallback clientCallback) {
         this.clientCallback = clientCallback;
+
+        serverChatBLLCallback = new IServerChatBLLCallback() {
+            @Override
+            public void onReceiveMessageServer(String mess)  {
+                System.out.println("Server receive mess: " + mess);
+                onReceiveMess(mess);
+            }
+
+            @Override
+            public void onReceiveFileServer(byte[] fileByte, String fileName) {
+                saveToFile(ChatConstant.SAVE_FILE_LOCATION + fileName, fileByte);
+
+                onReceiveFileSuccess(fileName);
+            }
+
+            @Override
+            public void onReceiveAudio(byte[] audioData) {
+
+                SourceDataLine line = Audio.getSourceDataLine();
+                try {
+                    line.open(Audio.getAudioFormat());
+                    line.start();
+
+                    line.write(audioData, 0, audioData.length);
+
+                    line.drain();
+
+                    line.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     abstract public void onReceiveMess(String mess);
     abstract public void notification(String mess);
     abstract public void onSendFileSuccess(String path);
+    abstract public void onReceiveFileSuccess(String fileName);
 
     public void onSendMessageActive(String mess) {
         System.out.println("Server send mess: " + mess);
@@ -135,5 +170,9 @@ public abstract class ServerChatBLL {
         }
 
         shouldRecording = newValue;
+    }
+
+    public IServerChatBLLCallback getServerChatBLLCallback() {
+        return serverChatBLLCallback;
     }
 }

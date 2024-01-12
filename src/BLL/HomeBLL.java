@@ -1,8 +1,8 @@
-package BLL.remote;
+package BLL;
 
-import BLL.remote.rmi.IRemoteDesktop;
-import BLL.remote.rmi.RmiClient;
-import BLL.remote.rmi.RmiServer;
+import BLL.rmi.IRemoteDesktop;
+import BLL.rmi.RmiClient;
+import BLL.rmi.RmiServer;
 import Presentation.ClientChatUi;
 import Presentation.RemoteScreenUi;
 

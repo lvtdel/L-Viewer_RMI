@@ -1,6 +1,6 @@
-package BLL.remote;
+package BLL.client;
 
-import BLL.remote.rmi.IRemoteDesktop;
+import BLL.rmi.IRemoteDesktop;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -1,7 +1,9 @@
 package Presentation;
 
-import BLL.remote.ServerChatBLL;
-import BLL.remote.rmi.ClientCallback;
+import BLL.server.ServerChatBLL;
+import BLL.server.IServerChatBLLCallback;
+import BLL.constants.ChatConstant;
+import BLL.rmi.IClientCallback;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -30,7 +32,7 @@ public class ServerChatUi extends ChatForm {
         return instance;
     }
 
-    public ServerChatUi(ClientCallback clientCallback) {
+    public ServerChatUi(IClientCallback clientCallback) {
         super();
 
         init(clientCallback);
@@ -46,8 +48,12 @@ public class ServerChatUi extends ChatForm {
         setVisible(true);
     }
 
+    public IServerChatBLLCallback getServerChatBLLCallback() {
+        return serverChatBLL.getServerChatBLLCallback();
+    }
 
-    private void init(ClientCallback clientCallback) {
+
+    private void init(IClientCallback clientCallback) {
         this.serverChatBLL = new ServerChatBLL(clientCallback) {
             @Override
             public void onReceiveMess(String mess) {
@@ -65,6 +71,12 @@ public class ServerChatUi extends ChatForm {
                 String mess = "Đã gửi 1 tệp tin: " + path;
 
                 addMessage("Me", mess);
+            }
+
+            @Override
+            public void onReceiveFileSuccess(String fileName) {
+                String message = "Đã gửi 1 tệp " + ChatConstant.SAVE_FILE_LOCATION + fileName;
+                addMessage("Partner", message);
             }
         };
     }

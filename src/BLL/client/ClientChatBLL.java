@@ -1,9 +1,9 @@
-package BLL.remote;
+package BLL.client;
 
 import BLL.constants.ChatConstant;
 import util.Audio;
-import BLL.remote.rmi.ClientCallback;
-import BLL.remote.rmi.IRemoteDesktop;
+import BLL.rmi.IClientCallback;
+import BLL.rmi.IRemoteDesktop;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
@@ -27,16 +27,18 @@ public abstract class ClientChatBLL {
         this.remoteDesktop = remoteDesktop;
 
         try {
-            ClientCallback callback = new ClientCallback() {
+            IClientCallback callback = new IClientCallback() {
 
                 @Override
-                public void receiverMessageClient(String mess) throws RemoteException {
+                public void receiverMessageClient(String mess)
+                        throws RemoteException {
                     System.out.println("Client receiver mess: " + mess);
                     onReceiveMess(mess);
                 }
 
                 @Override
-                public void receiveFileClient(byte[] fileByte, String fileName) throws RemoteException {
+                public void receiveFileClient(byte[] fileByte, String fileName)
+                        throws RemoteException {
                     saveToFile(ChatConstant.SAVE_FILE_LOCATION + fileName, fileByte);
 
 
@@ -44,7 +46,8 @@ public abstract class ClientChatBLL {
                 }
 
                 @Override
-                public void receiveAudioServer(byte[] audioData) throws RemoteException {
+                public void receiveAudioServer(byte[] audioData)
+                        throws RemoteException {
                     if (!isSpeakerOn) return;
 
                     SourceDataLine line = Audio.getSourceDataLine();

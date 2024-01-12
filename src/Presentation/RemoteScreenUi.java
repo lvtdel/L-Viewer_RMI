@@ -1,7 +1,7 @@
 package Presentation;
 
-import BLL.remote.RemoteScreenBLL;
-import BLL.remote.rmi.IRemoteDesktop;
+import BLL.client.RemoteScreenBLL;
+import BLL.rmi.IRemoteDesktop;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

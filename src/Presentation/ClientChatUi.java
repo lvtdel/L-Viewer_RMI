@@ -1,8 +1,8 @@
 package Presentation;
 
 import BLL.constants.ChatConstant;
-import BLL.remote.ClientChatBLL;
-import BLL.remote.rmi.IRemoteDesktop;
+import BLL.client.ClientChatBLL;
+import BLL.rmi.IRemoteDesktop;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

@@ -1,27 +1,23 @@
-package BLL.remote.rmi;
+package BLL.rmi;
 
-import BLL.constants.ChatConstant;
-import util.Audio;
+import BLL.server.IServerChatBLLCallback;
 import Presentation.HomeUi;
 import Presentation.ServerChatUi;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.SourceDataLine;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import static util.FileSupport.saveToFile;
-
 public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDesktop {
     final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     final Robot mr_robot;
 
+    IServerChatBLLCallback serverChatBLLCallback;
 
-    ServerChatUi serverChatUi;
 
     public RemoteDesktopImpl() throws RemoteException, AWTException {
         super();
@@ -87,38 +83,22 @@ public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDes
     }
 
     @Override
-    public void registerChat(ClientCallback clientCallback) throws RemoteException {
-        serverChatUi = new ServerChatUi(clientCallback);
+    public void registerChat(IClientCallback clientCallback) throws RemoteException {
+        serverChatBLLCallback = new ServerChatUi(clientCallback).getServerChatBLLCallback();
     }
 
     @Override
     public void receiveMessageServer(String mess) throws RemoteException {
-        System.out.println("Server receive mess: " + mess);
-        serverChatUi.addMessage("Partner", mess);
+        serverChatBLLCallback.onReceiveMessageServer(mess);
     }
 
     @Override
     public void receiveFileServer(byte[] fileByte, String fileName) throws RemoteException {
-        saveToFile(ChatConstant.SAVE_FILE_LOCATION + fileName, fileByte);
-
-        String message = "Đã gửi 1 tệp " + ChatConstant.SAVE_FILE_LOCATION + fileName;
-        serverChatUi.addMessage("Partner", message);
+        serverChatBLLCallback.onReceiveFileServer(fileByte, fileName);
     }
 
     @Override
     public void receiveAudioServer(byte[] audioData) throws RemoteException {
-        SourceDataLine line = Audio.getSourceDataLine();
-        try {
-            line.open(Audio.getAudioFormat());
-            line.start();
-
-            line.write(audioData, 0, audioData.length);
-
-            line.drain();
-
-            line.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        serverChatBLLCallback.onReceiveAudio(audioData);
     }
 }
