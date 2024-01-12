@@ -40,7 +40,7 @@ public class ServerChatUi extends ChatForm {
 //        KhoiTaoEventSend();
 //        khoiTaoEventSendFile();
 //        StartClientChatSocket(IP, port);
-        setTitle("Chat (client)");
+        setTitle("Chat (server)");
 //        SetLblPartnerIP(IP);
 
         super.addAction();
@@ -127,6 +127,7 @@ public class ServerChatUi extends ChatForm {
     @Override
     public void speakerStateChange() {
         super.speakerStateChange();
+        serverChatBLL.onSpeakerStateChange(chbxSpeaker.isSelected());
     }
 
     public void sendMessageInTextBox() {

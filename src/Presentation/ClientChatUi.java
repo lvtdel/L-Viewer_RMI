@@ -122,7 +122,7 @@ public class ClientChatUi extends ChatForm {
     @Override
     public void speakerStateChange() {
         super.speakerStateChange();
-        clientChatBLL.onMicStateChange(chbxSpeaker.isSelected());
+        clientChatBLL.onSpeakerStateChange(chbxSpeaker.isSelected());
     }
 
     public void sendMessageInTextBox() {

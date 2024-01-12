@@ -21,7 +21,7 @@ import static util.FileSupport.saveToFile;
 public abstract class ClientChatBLL {
     IRemoteDesktop remoteDesktop;
     boolean shouldRecording;
-    boolean isSpeakerOn;
+    boolean isSpeakerOn = true;
 
     public ClientChatBLL(IRemoteDesktop remoteDesktop) {
         this.remoteDesktop = remoteDesktop;

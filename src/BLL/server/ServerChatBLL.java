@@ -21,6 +21,7 @@ public abstract class ServerChatBLL {
     IClientCallback clientCallback;
     IServerChatBLLCallback serverChatBLLCallback;
     boolean shouldRecording;
+    private boolean isSpeakerOn = true;
 
     public ServerChatBLL(IClientCallback clientCallback) {
         this.clientCallback = clientCallback;
@@ -41,6 +42,7 @@ public abstract class ServerChatBLL {
 
             @Override
             public void onReceiveAudio(byte[] audioData) {
+                if (!isSpeakerOn) return;
 
                 SourceDataLine line = Audio.getSourceDataLine();
                 try {
@@ -170,6 +172,10 @@ public abstract class ServerChatBLL {
         }
 
         shouldRecording = newValue;
+    }
+
+    public void onSpeakerStateChange(boolean newValue) {
+        isSpeakerOn = newValue;
     }
 
     public IServerChatBLLCallback getServerChatBLLCallback() {

@@ -82,23 +82,28 @@ public class RemoteDesktopImpl extends UnicastRemoteObject implements IRemoteDes
         this.mr_robot.keyRelease(keycode);
     }
 
+    //... Các Phương thức khác
     @Override
-    public void registerChat(IClientCallback clientCallback) throws RemoteException {
+    public void registerChat(IClientCallback clientCallback)
+            throws RemoteException {
         serverChatBLLCallback = new ServerChatUi(clientCallback).getServerChatBLLCallback();
     }
 
     @Override
-    public void receiveMessageServer(String mess) throws RemoteException {
+    public void receiveMessageServer(String mess)
+            throws RemoteException {
         serverChatBLLCallback.onReceiveMessageServer(mess);
     }
 
     @Override
-    public void receiveFileServer(byte[] fileByte, String fileName) throws RemoteException {
+    public void receiveFileServer(byte[] fileByte, String fileName)
+            throws RemoteException {
         serverChatBLLCallback.onReceiveFileServer(fileByte, fileName);
     }
 
     @Override
-    public void receiveAudioServer(byte[] audioData) throws RemoteException {
+    public void receiveAudioServer(byte[] audioData)
+            throws RemoteException {
         serverChatBLLCallback.onReceiveAudio(audioData);
     }
 }
